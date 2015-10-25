@@ -19,13 +19,16 @@
 			<div class="container inner">
 				<div class="row">
 					<div class="col-sm-9">
-						<h1>Wallet invitation Backup phrase</h1>
-						<p>You can use this tool to accept Copay wallet invitations, and
-							generate a Mnemonic backup key. This backup is generated in your
-							browser, in a language of your choice. Write these 12 words down
-							on a piece of paper, where nobody can reach it. To use the backup
-							just download the Copay app and import the backup phrase and you
-							are ready to go.
+						<h1>Generate a backup phrase form a wallet invitation</h1>
+						<p>
+							This tool accept Copay wallet invitations and
+							generate a Mnemonic backup phrase. The backup is generated in the
+							browser in a language of your choice. Write down you backup phrase
+							because we won't store it. To use the backup just download the
+							Copay app and import the backup phrase. Audit and fork the code at
+							<a href="https://github.com/kaibakker/BWS-backup-key">Github</a>,
+							or contact me via
+							<a href="https://twitter.com/kaibakker">@kaibakker</a>.
 						</p>
 					</div>
 				</div>
@@ -36,7 +39,6 @@
 			<div class="container inner">
 				<div class="row">
 					<div class="col-md-6">
-
 						<label>Wallet invitation code</label>
 						<div class="input-group">
 							<input id="invitation_code" type="text" name="name" class="form-control">
@@ -63,9 +65,8 @@
 							</select>
 						</div>
 
-						<!-- <div class="input-group"> -->
-							<button class="btn btn-default control-label"  type="button" id="target">Join Wallet &amp; Generate backup</button>
-						<!-- </div> -->
+
+						<button class="btn btn-default control-label"  type="button" id="target">Join Wallet &amp; Generate backup</button>
 					</div>
 				</div>
 			</div>
@@ -86,15 +87,12 @@
 		<section id="footer" class="dark-bg">
 			<div class="container inner-small">
 				<p class="pull-left" style="margin: 10px">
-					Audit and fork the code at <a href="https://github.com/kaibakker">Github</a>,
+					Audit and fork the code at <a href="https://github.com/kaibakker/BWS-backup-key">Github</a>,
 					or contact me via <a href="https://twitter.com/kaibakker">@kaibakker</a>
 				</p>
 			</div>
 		</section>
 
-		<!-- ============================================================= FOOTER : END ============================================================= -->
-
-		<!-- JavaScripts placed at the end of the document so the pages load faster -->
 		<script src="assets/js/jquery.min.js"></script>
 
 		<script src="assets/js/bootstrap.min.js"></script>
@@ -135,16 +133,11 @@
 
 
 			var succes = function(client, wallet) {
-				console.log('You succesfully joined: ' + wallet.name + '!');
-				console.log("Write down the following 12 word backup prase:\n");
-
-				// console.log(client.getMnemonic());
 				$('#backup-phrase-text').text(client.getMnemonic())
 
 				$('#form').hide();
 				$('#backup-phrase').show();
 			}
-
 	  </script>
 	</body>
 </html>
