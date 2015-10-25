@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta name="description" content="">
+		<meta name="author" content="Kai Bakker">
+
+		<title>Create a backup phrase for Copay</title>
+
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+		<link href="assets/css/main.css" rel="stylesheet" data-skrollr-stylesheet>
+	</head>
+
+	<body>
+		<section class="tint-bg">
+			<div class="container inner">
+				<div class="row">
+					<div class="col-sm-9">
+						<h1>Wallet invitation Backup phrase</h1>
+						<p>You can use this tool to accept Copay wallet invitations, and
+							generate a Mnemonic backup key. This backup is generated in your
+							browser, in a language of your choice. Write these 12 words down
+							on a piece of paper, where nobody can reach it. To use the backup
+							just download the Copay app and import the backup phrase and you
+							are ready to go.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="light-bg" id="form">
+			<div class="container inner">
+				<div class="row">
+					<div class="col-md-6">
+
+						<label>Wallet invitation code</label>
+						<div class="input-group">
+							<input id="invitation_code" type="text" name="name" class="form-control">
+						</div>
+
+						<label>Copay name</label>
+						<div class="input-group">
+							<input id="copay_name" type="text" name="name" class="form-control" placeholder="Copay name" value="Backup Key">
+						</div>
+
+						<label class="control-label">BWS URL</label>
+						<div class="input-group">
+							<input id="bws_instance_url" type="text" name="name" class="form-control" placeholder="BWS_INSTANCE_URL" value="https://bws.bitpay.com/bws/api">
+						</div>
+
+						<label class="control-label">Backup language</label>
+						<div class="input-group">
+							<select id="backup_language" class="form-control">
+							  <option value="en" selected>English</option>
+							  <option value="es">Spanish</option>
+							  <option value="ja">Japanese</option>
+							  <option value="zh">Chinese</option>
+							  <option value="fr">French</option>
+							</select>
+						</div>
+
+						<!-- <div class="input-group"> -->
+							<button class="btn btn-default control-label"  type="button" id="target">Join Wallet &amp; Generate backup</button>
+						<!-- </div> -->
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+    <section class="light-bg" id="backup-phrase" style="display: none">
+			<div class="container inner">
+				<div class="row">
+					<div class="col-md-9 center-block">
+						Carefully write down your backup phrase
+					</div>
+					<h1 class="col-md-9 center-block" id="backup-phrase-text"></h1>
+				</div>
+			</div>
+		</section>
+
+		<section id="footer" class="dark-bg">
+			<div class="container inner-small">
+				<p class="pull-left" style="margin: 10px">
+					Audit and fork the code at <a href="https://github.com/kaibakker">Github</a>,
+					or contact me via <a href="https://twitter.com/kaibakker">@kaibakker</a>
+				</p>
+			</div>
+		</section>
+
+		<!-- ============================================================= FOOTER : END ============================================================= -->
+
+		<!-- JavaScripts placed at the end of the document so the pages load faster -->
+		<script src="assets/js/jquery.min.js"></script>
+
+		<script src="assets/js/bootstrap.min.js"></script>
+
+		<script src="assets/js/bitcore-wallet-client.js"></script>
+
+	  <script type="text/javascript">
+
+			$('#target').on('click', function(event) {
+				event.preventDefault();
+
+				var secret = $('#invitation_code').val();
+
+				var copay_name = $('#copay_name').val();
+
+				var bws_instance_url = $('#bws_instance_url').val();
+
+				var backup_language = $('#backup_language').val();
+
+				var client = new Client({
+					baseUrl: bws_instance_url,
+					verbose: false,
+				});
+
+				// Create a Mnemonic backup prase
+				client.seedFromRandomWithMnemonic('livenet', null, backup_language);
+
+				// Join the wallet with name Backup key
+				client.joinWallet(secret, copay_name, {}, function(err, wallet) {
+					if(err) return;
+
+					client.openWallet(function(err, ret) {
+						if(err) return;
+						succes(client, wallet);
+					});
+				});
+			})
+
+
+			var succes = function(client, wallet) {
+				console.log('You succesfully joined: ' + wallet.name + '!');
+				console.log("Write down the following 12 word backup prase:\n");
+
+				// console.log(client.getMnemonic());
+				$('#backup-phrase-text').text(client.getMnemonic())
+
+				$('#form').hide();
+				$('#backup-phrase').show();
+			}
+
+	  </script>
+	</body>
+</html>
