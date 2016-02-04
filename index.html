@@ -72,8 +72,7 @@
 			</div>
 		</section>
 
-
-    <section class="light-bg" id="backup-phrase" style="display: none">
+		<section class="light-bg" id="backup-phrase" style="display: none">
 			<div class="container inner">
 				<div class="row">
 					<div class="col-md-9 center-block">
@@ -99,7 +98,11 @@
 
 		<script src="assets/js/bitcore-wallet-client.js"></script>
 
-	  <script type="text/javascript">
+		<script type="text/javascript">
+			$(document).ready(function() {
+ 		  		$("#invitation_code").val(window.location.hash.substring(1));
+ 
+			});
 
 			$('#target').on('click', function(event) {
 				event.preventDefault();
